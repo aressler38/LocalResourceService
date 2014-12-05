@@ -133,9 +133,6 @@
       var i = 0;
       for ( var x in _openXHR ) ++i;
       _lrs.onchange({ pending: i, ready: !i });
-       
-
-
     }
   };
 
