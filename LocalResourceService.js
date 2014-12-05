@@ -111,13 +111,13 @@
       while ( _openXHR[_id] ) ++_id;
       _openXHR[_id] = true; 
       xhr.open('GET', this.makeURL(config.url), true);
+      xhr.responseType = 'arraybuffer';
       xhr.onreadystatechange = function() {
         if ( this.readyState === 4) {
           if ( this.status === 200 ) {
             config.success(this);
           }
           delete _openXHR[_id];
-          console.log("TRIGGER ONCHANGE:", _lrs);
           _xhrdone();
         }
       };
