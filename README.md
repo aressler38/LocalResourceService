@@ -8,6 +8,8 @@ creates an [objectURL](https://developer.mozilla.org/en-US/docs/Web/API/URL.crea
 This gives the user the ability to dynamically change loaded resources that would have otherwise been 
 static.
 
+The goal of this library is to help you better manage resources that use URIs.
+
 ## Examples
     
 ### load a resource
@@ -29,4 +31,5 @@ static.
 
 ## TODO
 1. Implement blob change events and handlers.
+1. Implement a create method so that a given object and MIME combo can be added to the resources table.
 1. Better automated MIME handling for common types (JSON, image, etc.).
