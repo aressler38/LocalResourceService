@@ -1,5 +1,8 @@
 (function (window) {
 
+  /** 
+   * @global 
+   */
   window.LocalResourceService = window.LRS = LocalResourceService;
 
   /**
@@ -23,6 +26,7 @@
     init_services.call(this);
   }
 
+  // =================== PROTOTYPE ============================================
 
   LocalResourceService.prototype = {
 
@@ -66,13 +70,23 @@
   /**
    * Establishes the `services` on the `LocalResourceService` during construction.
    * Creates an `onchange` hook for user defined event handling.
-   *
    */
   function init_services () {
     var _lrs = this;
     var s = this.services = { };
     var _openXHR = { };
+
+    /** 
+     * This is executed when XHR objects finish.
+     * @callback
+     * @memberof LocalResourceService
+     */
     this.onchange = function () { };
+
+    /**
+     * Try to create a new 
+     * @memberof LocalResourceService
+     */ 
     s.xhr = function () {
       var xhr;
       try {
@@ -82,6 +96,13 @@
       }
       return xhr;
     };
+
+    /**
+     * Validate a url string and convert it to an absolute URL string.
+     *
+     * @memberof LocalResourceService
+     * @param {string} urlstring Should be an absolute or relative URL string to a resource.
+     */
     s.makeURL = function (urlstring) {
       var url;
       var href;
@@ -100,6 +121,17 @@
       delete url;
       return href;
     };
+
+    /**
+     * Make an HTTP GET request to the configured url.
+     * On a successful transfer, execute the success callback.
+     *
+     * @memberof LocalResourceService
+     * @param {object} config A general configuration object
+     * @param {string} config.success Callback for XHR success completion. 
+     *                  The xhr object is passed as the first parameter. 
+     * @param {string} config.url Absolute or relative URL string to resource.
+     */
     s.get = function (config) {
       if ( typeof config === 'string' ) {
         var c = { };
@@ -118,22 +150,35 @@
             config.success(this);
           }
           delete _openXHR[_id];
+          delete xhr;
           _xhrdone();
         }
       };
       if ( config.data ) xhr.send(config.data); else xhr.send();
       return xhr;
     };
+
+    /**
+     * Given a completed XHR object, parse the resources content type and create 
+     * a Blob for it.
+     *
+     * @memberof LocalResourceService
+     * @param {XMLHttpRequest} xhr The completely ready XHR object.
+     * @return {Blob} blob this is the blob representing the XHR response.
+     */
     s.toBlob = function (xhr) {
       var mime = xhr.getResponseHeader('content-type');
       var blob = new Blob([xhr.response], {type : mime});
       return blob;
     };
+
+    // private: executes the onchange callback and passes the status
     function _xhrdone() {
       var i = 0;
       for ( var x in _openXHR ) ++i;
       _lrs.onchange({ pending: i, ready: !i });
     }
+
   };
 
 
