@@ -10,9 +10,16 @@
       var lrs = new LRS();
       var img1 = document.getElementById('img1');
       lrs.load('img/png1.png', { keyName: 'png1' });
+      lrs.load('js/foo.js', { keyName: 'foo' });
       lrs.onchange = function (state) { 
         if ( state.ready ) {
           img1.src = lrs.resources.png1.uri;
+          console.debug('image should appear...');
+          if ( lrs.resources.foo.data() !== 'foo' ) {
+            alert('FOO TEST FAILED');
+          } else {
+            console.debug('FOO TEST PASSED');
+          }
         }
       };
     </script>
